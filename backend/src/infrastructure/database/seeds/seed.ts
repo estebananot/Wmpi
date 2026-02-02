@@ -8,6 +8,8 @@ import { seedProducts } from './product.seeder';
 
 config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const dataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
@@ -17,6 +19,7 @@ const dataSource = new DataSource({
   database: process.env.DB_DATABASE || 'wompi_ecommerce',
   entities: [ProductEntity, CustomerEntity, TransactionEntity, DeliveryEntity],
   synchronize: true,
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
 
 async function runSeeds() {
