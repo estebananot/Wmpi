@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: wompiuser
+      POSTGRES_PASSWORD: WompiPass2026!
+      POSTGRES_DB: wompi_ecommerce
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      CORS_ORIGIN: "*"
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: wompiuser
+      DB_PASSWORD: WompiPass2026!
+      DB_DATABASE: wompi_ecommerce
+      WOMPI_API_URL: https://api-sandbox.co.uat.wompi.dev/v1
+      WOMPI_PUBLIC_KEY: pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7
+      WOMPI_PRIVATE_KEY: prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg
+      WOMPI_INTEGRITY_KEY: stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
