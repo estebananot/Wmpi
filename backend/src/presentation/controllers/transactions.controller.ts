@@ -10,6 +10,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateTransactionUseCase } from '../../application/use-cases/transactions/create-transaction.usecase';
 import { GetTransactionUseCase } from '../../application/use-cases/transactions/get-transaction.usecase';
+import { GetAllTransactionsUseCase } from '../../application/use-cases/transactions/get-all-transactions.usecase';
 import { ProcessPaymentUseCase } from '../../application/use-cases/transactions/process-payment.usecase';
 import { CreateTransactionDto } from '../../application/dto/create-transaction.dto';
 import { PaymentDataDto } from '../../application/dto/payment-data.dto';
@@ -21,8 +22,26 @@ export class TransactionsController {
   constructor(
     private readonly createTransactionUseCase: CreateTransactionUseCase,
     private readonly getTransactionUseCase: GetTransactionUseCase,
+    private readonly getAllTransactionsUseCase: GetAllTransactionsUseCase,
     private readonly processPaymentUseCase: ProcessPaymentUseCase,
   ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all transactions' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of transactions',
+    type: [TransactionResponseDto],
+  })
+  async getAllTransactions(): Promise<{ data: TransactionResponseDto[] }> {
+    const result = await this.getAllTransactionsUseCase.execute();
+
+    if (result.isFailure) {
+      throw new HttpException(result.error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return { data: result.value };
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create a new transaction (PENDING state)' })

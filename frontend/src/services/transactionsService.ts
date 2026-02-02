@@ -64,4 +64,9 @@ export const transactionsService = {
     const response = await api.get<{ data: TransactionResponse }>(`/transactions/${id}`);
     return response.data.data;
   },
+
+  async getAll(): Promise<TransactionResponse[]> {
+    const response = await api.get<{ data: TransactionResponse[] }>('/transactions');
+    return response.data.data;
+  },
 };

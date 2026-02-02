@@ -11,6 +11,7 @@ import { TypeOrmCustomerRepository } from '../infrastructure/database/repositori
 import { WompiService } from '../infrastructure/http/wompi/wompi.service';
 import { CreateTransactionUseCase } from '../application/use-cases/transactions/create-transaction.usecase';
 import { GetTransactionUseCase } from '../application/use-cases/transactions/get-transaction.usecase';
+import { GetAllTransactionsUseCase } from '../application/use-cases/transactions/get-all-transactions.usecase';
 import { ProcessPaymentUseCase } from '../application/use-cases/transactions/process-payment.usecase';
 import { TransactionsController } from '../presentation/controllers/transactions.controller';
 
@@ -27,6 +28,7 @@ import { TransactionsController } from '../presentation/controllers/transactions
   providers: [
     CreateTransactionUseCase,
     GetTransactionUseCase,
+    GetAllTransactionsUseCase,
     ProcessPaymentUseCase,
     WompiService,
     {

@@ -42,4 +42,12 @@ export class TypeOrmTransactionRepository implements TransactionRepositoryInterf
     });
     return entities.map((entity) => entity.toDomain());
   }
+
+  async findAll(): Promise<Transaction[]> {
+    const entities = await this.repository.find({
+      order: { createdAt: 'DESC' },
+      take: 50, // Limit to last 50 transactions
+    });
+    return entities.map((entity) => entity.toDomain());
+  }
 }
