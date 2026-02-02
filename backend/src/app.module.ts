@@ -29,6 +29,7 @@ import {
         entities: [ProductEntity, CustomerEntity, TransactionEntity, DeliveryEntity],
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
+        ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
       }),
       inject: [ConfigService],
     }),
